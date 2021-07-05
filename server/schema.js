@@ -1,23 +1,22 @@
 const schema = `
 type Query{
-    getBooks(id: ID!): [Books]
+    getBooks(_id: ID!): [Books]
     getBooksAll: [Books]
 }
 
 type Books {
-    id: String
     name: String
     author: String
     genre: String
-    ISBN: String
+    isbn: String
 }
 
 input BooksInput{
-    id: String
+
     name: String
     author: String
     genre: String
-    ISBN: String
+    isbn: String!
 }
 
 type Login{
@@ -38,10 +37,7 @@ input userInput {
 }
 
 type User {
-    name: String
-    userid: String
-    pwd: String
-    description: String
+ status: Boolean
 }
 
 type Mutation {

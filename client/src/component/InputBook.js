@@ -7,7 +7,7 @@ class InputBook extends React.Component{
             name: "",
             author: "",
             genre: "",
-            ISBN: "",
+            isbn: ""
           };
 
           this.addName = this.addName.bind(this);
@@ -16,7 +16,7 @@ class InputBook extends React.Component{
 
           this.addGenre = this.addGenre.bind(this);
 
-          this.addISBM = this.addISBM.bind(this);
+          this.addisbn = this.addisbn.bind(this);
 
           this.addItem = this.addItem.bind(this);
         }
@@ -39,16 +39,22 @@ class InputBook extends React.Component{
         })
       }
 
-      addISBM(event){
+      addisbn(event){
         this.setState({
-            ISBN: event.target.value
+            isbn: event.target.value
         })
       }
 
     addItem(event){
       event.preventDefault();
         this.props.addItems(this.state);
-        // console.log(this.state);
+        console.log(this.state);
+        this.setState({
+          name: "",
+          author: "",
+          genre: "",
+          isbn: "",
+        });
     }
      
     render(){
@@ -57,7 +63,7 @@ class InputBook extends React.Component{
    <input type="text" value={this.state.name} onChange={this.addName} placeholder="name" required/>
    <input type="text" value={this.state.author} onChange={this.addAuthor} placeholder="author" />
    <input type="text" value={this.state.genre} onChange={this.addGenre} placeholder="genre" />
-   <input type="text" value={this.state.ISBN} onChange={this.addISBM} placeholder="ISBN" />
+   <input type="text" value={this.state.isbn} onChange={this.addisbn} placeholder="isbn" />
    <button type="submit">Submit</button>
    </form>
    </>

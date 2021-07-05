@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 // import {gql} from '@apollo/client';
-import {LOAD_USERS} from './queries.js';
-import {nanoid} from 'nanoid';
+// import {LOAD_USERS} from './queries.js';
+// import {nanoid} from 'nanoid';
 import InputBook from './InputBook';
-import { Query } from 'react-apollo';
+// import { Query } from 'react-apollo';
 
 import {SubmitDataBook} from '../hoc/books/SubmitBook';
 
@@ -16,79 +16,65 @@ class Book extends React.Component {
 
       this.state = {
           newItem: "",
-          Backend_data: ""
+          Backend_data: "",
+          loading: true
         }
 
-        this.addItems = this.addItems.bind(this);           
-    }
+        this.addItems = this.addItems.bind(this);   
+   }
 
-    handleClick({name,author,genre,ISBN}) {
-
-      console.log(name,author);
-
+    handleClick({name,author,genre,isbn}) {
+       console.log({name,author,genre,isbn});
       this.props.createData({
-        name: name,
-        author: author,
-        genre: genre,
-        author: author
+        name,
+        author,
+        genre,
+        author,
+        isbn
       });
- 
-      let data = this.props.BookData;
-      if(data?.getBooksAll){
-         this.setState({
-            Backend_data: data.getBooksAll
-         },()=>{
-            console.log(this.state.Backend_data);
-         })
-      }
+
     }
+
 
    addItems(data){
-      console.log(data);
+      // console.log(data);
      this.setState({
         newItem: data
      },()=>{
      this.handleClick(this.state.newItem);
      });
    }
-    
-    UpdateData(changeAvailability){
-       changeAvailability({
-          variable: {
-             id: nanoid(),
-             name: this.state.name,
-             author: this.state.author,
-             genre: this.state.genre,
-             ISBN: this.state.ISBN
-          }
-       })
-    }
 
-   //  componentDidUpdate(prevProps, prevState, snapshot);
-
-   // componentDidUpdate(pP,pS,sS){
-   //    if(pS.Backend_data == this.state.Backend_data){
-          
-   //     }
-   // }
+   componentWillReceiveProps(nextProps){
+      console.log("next Props: ",nextProps);
+      const { BookData:{getBooksAll} } = nextProps;
+      
+      if(getBooksAll.length){
+          this.setState({Backend_data:getBooksAll}, 
+          () => this.setState({loading: false})
+          );
+      }
+   }
+  
 
     OutputPrint(data){
-      //  console.log("updated");
-      if(data!="")
-         return <ul> {data.map(({id,name})=> <li id={id}>{`ID: ${id}, Name: ${name}`}</li>)}</ul>;
-         else
+   // console.log(data);
+      if(data!=""){
+         return <ul> {data.map(({name,author,genre,isbn})=> <li>{`Name: ${name}, Author: ${author}, Genre: ${genre}, isbn: ${isbn}`}</li>)}</ul>;
+      }else{
          return <Fragment/>
-    }
+      }
 
-   //  componentDidMount()
+      }
 
    render(){
-      return (
-         <div>
-         <InputBook addItems={this.addItems}/>
-          {this.OutputPrint(this.state.Backend_data)}
-         </div>
-      )};
+      const {loading} = this.state;
+      console.log(this.state.loading);
+
+      return (<><InputBook addItems={this.addItems}/> 
+      {(loading)?"Loading...":this.OutputPrint(this.state.Backend_data)}</>);
+
+   };
 }
 
-export default SubmitDataBook(GetBook(Book));
+export default GetBook(SubmitDataBook(Book));

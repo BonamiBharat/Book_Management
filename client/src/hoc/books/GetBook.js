@@ -4,11 +4,10 @@ import { Query } from 'react-apollo';
 export const LOAD_USERS = gql`
 query getBooksAll{ 
 getBooksAll{
-    id
     name
     author
     genre
-    ISBN
+    isbn
   }
 }`;
 

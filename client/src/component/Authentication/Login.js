@@ -41,11 +41,12 @@ class Login extends Component {
         userid: this.state.username,
         pwd: this.state.password
       }).then((response)=>{
-        console.log(response.data.loginCheck.status);
+        if(response.data.loginCheck.status){
         // return response.json();
         this.setState({
-            loggedIn: response.data.loginCheck.status
+            loggedIn: true
         });
+    }
       });
 
     }
