@@ -1,21 +1,40 @@
 import Book from './component/Book';
 import {
-  ApolloClient, InMemoryCache,
+  ApolloClient, InMemoryCache,ApolloLink,concat
 } from 'apollo-boost'
-import { createUploadLink } from 'apollo-upload-client'
+import { createUploadLink, } from 'apollo-upload-client'
 // import { onError } from 'apollo-link-error';
 import { ApolloProvider } from 'react-apollo'; 
 import Login from './component/Authentication/Login';
 import Logout from './component/Authentication/Logout';
 
 import CreateUser from './component/Authentication/CreateUser';
-// import Logi from './component/Authentication/Login';
+import './App.scss';
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Switch
 } from 'react-router-dom';
+import Counter from './component/redux/counter';
+
+
+
+const auth = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  const userObj = localStorage.getItem('LoginToken');
+
+  operation.setContext({
+    headers: {
+      'x-token': userObj || '1212'
+    },
+  })
+
+  return forward(operation);
+})
+
+
+
 
 let serverLink =  "http://localhost:4000/";
 
@@ -33,7 +52,7 @@ const httpLink = createUploadLink({ uri: serverLink })
 // }
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: concat(auth,httpLink),
   cache: new InMemoryCache()
 })
 
@@ -42,25 +61,31 @@ function App() {
     <ApolloProvider client={client}>
      <Router>
      <div>
-       <ul>
+       <div className="navbar">
+       <ul className="list">
          <li>
-           <Link to='/'>DashBoard</Link>
+           <Link to='/' className="header-content">DashBoard</Link>
            </li>
          <li>
-           <Link to='/login'>Login In</Link>
+           <Link to='/login' className="header-content">Login In</Link>
            </li>
          <li>
-           <Link to='/logout'>Login Out</Link>
+           <Link to='/logout' className="header-content">Login Out</Link>
            </li>
          <li>
-           <Link to='/createUser'>Create User</Link>
+           <Link to='/createUser' className="header-content">Create User</Link>
+           </li>
+           <li>
+           <Link to='/counter' className="header-content">Counter</Link>
            </li>
          </ul>
+       </div>
          <Switch>
              <Route exact path='/' component={Book}></Route>
              <Route exact path='/login' component={Login}></Route>
              <Route exact path='/logout' component={Logout}></Route>
              <Route exact path='/createUser' component={CreateUser}></Route>
+             <Route exact path='/counter' component={Counter}></Route>
            </Switch>
        </div>
    </Router>

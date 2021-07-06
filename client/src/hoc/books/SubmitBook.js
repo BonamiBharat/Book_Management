@@ -11,6 +11,7 @@ mutation($name: String, $author: String, $genre: String, $isbn: String!) {
       author
       genre
       isbn
+      status
     }
   }`;
 

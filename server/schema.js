@@ -9,6 +9,7 @@ type Books {
     author: String
     genre: String
     isbn: String
+    status: Boolean
 }
 
 input BooksInput{
@@ -16,7 +17,7 @@ input BooksInput{
     name: String
     author: String
     genre: String
-    isbn: String!
+    isbn: String
 }
 
 type Login{

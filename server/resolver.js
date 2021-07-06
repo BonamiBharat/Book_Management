@@ -1,13 +1,24 @@
-// import {nanoid} from 'nanoid';
+import {nanoid} from 'nanoid';
+import { combineResolvers } from 'graphql-resolvers';
 import {CreateUserBookData} from './service/createUser.js';
 import {GetData} from './service/getdata.js';
+import jwt from 'jsonwebtoken';
 
-let bookHolder=[]; //database
-let userData = []; //user database
+const isAuthentication = async(parent,data,ctx,info)=>{
+    // if(ctx == 'null'){
+    //     console.log(ctx);
+    //     return [{name: false}];
+    // }
+    try{
+    const token = await jwt.verify(ctx,'8237423174237423749823749821734982374271483434234234');
+    }catch(error){
+       return [{status: false}];
+    }
+}
 
 const resolver = {
     Query: {
-        getBooks : (parent,{_id},ctx,info) => {  
+        getBooks : combineResolvers( isAuthentication,(parent,{_id},ctx,info) => {  
             // console.log("run", _id);
             
             // let bookData = bookHolder.filter((book) => {
@@ -15,60 +26,65 @@ const resolver = {
             //     return book.id == id;
             // });
             // return bookData;
-        },
+        }),
 
-        getBooksAll : async(parent,data,ctx,info) => {  
-            console.log("run2");
+        getBooksAll : combineResolvers( isAuthentication,(async(parent,data,ctx,info) => {  
+            // console.log("run2");
             // console.log(bookHolder);
             const result = await GetData.getallbook();
             // console.log(result);
             return result;
-        }
-        
+        })
+      )
     },
     Mutation: {
-        createBooks(parent,{booData},ctx,info){  
+        createBooks: combineResolvers( isAuthentication ,(parent,{booData},ctx,info) => {  
             // console.log(data);
             CreateUserBookData.CreateBookData({
                 name: booData.name,
                 author: booData.author,
                 genre: booData.genre,
-                isbn: booData.isbn
+                isbn: booData.isbn,
+                status: true
             });
 
-            console.log("createBooks", booData);
+            // console.log("createBooks", booData);
 
             return {name: booData.name,  author: booData.author,  genre: booData.genre, isbn: booData.isbn};
-        },
+        }),
 
-        async loginCheck(parent,{logindata},ctx,info){
-
-        //   let check = userData.filter((user)=>{
-        //       return (user.userid == logindata.userid && user.pwd == logindata.pwd);
-        //   })
+        loginCheck: async(parent,{logindata},ctx,info)=>{
 
            const result = await GetData.getuser(logindata.userid,logindata.pwd);
-            
+        
+           if(result){
+            //   let unique_id = nanoid();
+            let token = await jwt.sign({id: logindata.userid }, '8237423174237423749823749821734982374271483434234234');
+              console.log(token);
+              return {status: true,token: token};
+           }
+
             return {
-                status: result
+                status: false
             }
 
         },
 
-        createUser(parent,{userdata},ctx,info){
+        createUser: combineResolvers( isAuthentication,async(parent,{userdata},ctx,info)=>{
             CreateUserBookData.CreateUserData({
                 name: userdata.name,
                 userid: userdata.userid,
                 pwd: userdata.pwd,
-                description: userdata.description
+                description: userdata.description,
+                status: true
             });
            
             return {
               status : true
             }
-        }
+        })
 
-    } 
+    }
 
 }
 

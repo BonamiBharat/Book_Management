@@ -1,0 +1,75 @@
+.navbar{
+    list-style-type: none;
+    overflow: hidden;
+    background-color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.list{
+    display: flex;
+    flex-direction: row;
+    float: right;
+}
+
+.header-content{
+    font-size: 20px;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    float: right;
+
+    &:hover{
+            background-color: #111;       
+    }
+}
+
+input[type=text]{
+    width:50%;
+    border:2px solid #aaa;
+    border-radius:4px;
+    margin:8px 0;
+    outline:none;
+    padding:8px;
+    box-sizing:border-box;
+    transition:.3s;
+    text-align: center;
+
+    &:focus{
+        border-color:dodgerBlue;
+        box-shadow:0 0 8px 0 dodgerBlue;
+    }
+  }
+
+  form{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+ .books_entry_div{
+     display: flex;
+    justify-content: center;
+ }
+
+ .books_entry_ul{
+    list-style-type: none;
+    overflow: hidden;
+    // background-color: #333;
+    margin: 0;
+    padding: 0;
+ }
+
+ .books_entry_list{
+    width:100%;
+    border:2px solid #aaa;
+    border-radius:4px;
+    margin:8px 0;
+    outline:none;
+    padding:8px;
+    box-sizing:border-box;
+    transition:.3s;
+    text-align: center;
+ }

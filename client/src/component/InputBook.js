@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 
 class InputBook extends React.Component{
     constructor(props){
@@ -7,8 +8,15 @@ class InputBook extends React.Component{
             name: "",
             author: "",
             genre: "",
-            isbn: ""
+            isbn: "",
+            loggedIn: false
           };
+
+          const token = localStorage.getItem('LoginToken');
+    if(token != null){
+        this.state.loggedIn = true;
+    }
+  
 
           this.addName = this.addName.bind(this);
 
@@ -47,8 +55,8 @@ class InputBook extends React.Component{
 
     addItem(event){
       event.preventDefault();
-        this.props.addItems(this.state);
-        console.log(this.state);
+        this.props.addItems({name: this.state.name,author: this.state.author,genre: this.state.genre,isbn: this.state.isbn});
+        // console.log(this.state);
         this.setState({
           name: "",
           author: "",
@@ -58,13 +66,17 @@ class InputBook extends React.Component{
     }
      
     render(){
+      if(!this.state.loggedIn){
+        return <Redirect to="/login" />
+     }
+
    return <>
    <form onSubmit={this.addItem}>
    <input type="text" value={this.state.name} onChange={this.addName} placeholder="name" required/>
    <input type="text" value={this.state.author} onChange={this.addAuthor} placeholder="author" />
    <input type="text" value={this.state.genre} onChange={this.addGenre} placeholder="genre" />
    <input type="text" value={this.state.isbn} onChange={this.addisbn} placeholder="isbn" />
-   <button type="submit">Submit</button>
+   <button classaName="cssbutton" type="submit">Submit</button>
    </form>
    </>
 };

@@ -1,12 +1,7 @@
 import React, { Fragment } from 'react';
-// import {gql} from '@apollo/client';
-// import {LOAD_USERS} from './queries.js';
-// import {nanoid} from 'nanoid';
 import InputBook from './InputBook';
-// import { Query } from 'react-apollo';
-
 import {SubmitDataBook} from '../hoc/books/SubmitBook';
-
+import {Redirect} from 'react-router-dom';
 import GetBook from '../hoc/books/GetBook';
 
 class Book extends React.Component {
@@ -17,8 +12,16 @@ class Book extends React.Component {
       this.state = {
           newItem: "",
           Backend_data: "",
-          loading: true
+          loading: true,
+          loggedIn: false
         }
+
+      
+     const token = localStorage.getItem('LoginToken');
+
+     if(token != null){
+         this.state.loggedIn = true;
+     }
 
         this.addItems = this.addItems.bind(this);   
    }
@@ -54,13 +57,15 @@ class Book extends React.Component {
           () => this.setState({loading: false})
           );
       }
+      // if(getBooksAll[0].status == false){
+      //    this.setState({loggedIn: false});
+      // }
    }
-  
 
     OutputPrint(data){
    // console.log(data);
       if(data!=""){
-         return <ul> {data.map(({name,author,genre,isbn})=> <li>{`Name: ${name}, Author: ${author}, Genre: ${genre}, isbn: ${isbn}`}</li>)}</ul>;
+         return <div className="books_entry_div"><ul className="books_entry_ul"> {data.map(({name,author,genre,isbn})=> <li className="books_entry_list">{`Name: ${name}, Author: ${author}, Genre: ${genre}, isbn: ${isbn}`}</li>)}</ul></div>;
       }else{
          return <Fragment/>
       }
@@ -68,8 +73,13 @@ class Book extends React.Component {
       }
 
    render(){
+      if(!this.state.loggedIn){
+         return <Redirect to="/login" />
+      }
+      
+      // this.forceUpdate();
       const {loading} = this.state;
-      console.log(this.state.loading);
+      // console.log(this.state.loading);
 
       return (<><InputBook addItems={this.addItems}/> 
       {(loading)?"Loading...":this.OutputPrint(this.state.Backend_data)}</>);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Credential } from '../../hoc/login/Credential';
 import {Redirect} from 'react-router-dom';
-
+import {nanoid} from 'nanoid';
 
 class Login extends Component {
     constructor(props){
@@ -12,6 +12,11 @@ class Login extends Component {
          loggedIn: false
      }
 
+    // const token = localStorage.getItem('LoginToken');
+    // if(token != null){
+    //     this.state.loggedIn = true;
+    // }
+  
      this.addUser = this.addUser.bind(this);
 
           this.addPwd = this.addPwd.bind(this);
@@ -41,8 +46,12 @@ class Login extends Component {
         userid: this.state.username,
         pwd: this.state.password
       }).then((response)=>{
+          console.log(response);
         if(response.data.loginCheck.status){
-        // return response.json();
+        //   console.log(response.data.loginCheck.token);
+          let logintoken = response.data.loginCheck.token;
+        //   console.log(token);
+        localStorage.setItem('LoginToken', logintoken);
         this.setState({
             loggedIn: true
         });

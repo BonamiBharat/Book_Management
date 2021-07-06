@@ -13,7 +13,6 @@ class CreateUser extends Component {
              status: false
         };
         
-
         this.addUserId = this.addUserId.bind(this);
 
         this.addUserName = this.addUserName.bind(this);

@@ -8,6 +8,7 @@ getBooksAll{
     author
     genre
     isbn
+    status
   }
 }`;
 
