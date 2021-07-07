@@ -12,7 +12,7 @@ getBooksAll{
   }
 }`;
 
-const GetBook = (Component) => (props) => {
+const GetBookAll = (Component) => (props) => {
 
     return (
         <Query query={LOAD_USERS}>
@@ -27,4 +27,4 @@ const GetBook = (Component) => (props) => {
      );
 }
 
-export default GetBook;
+export default GetBookAll;

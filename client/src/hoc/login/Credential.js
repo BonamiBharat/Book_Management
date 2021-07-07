@@ -10,12 +10,27 @@ mutation($userid: String, $pwd: String) {
     }
   }`;
 
+  const LOAD_USERS = gql`
+query getBooks{ 
+getBooks{
+    name
+    author
+    genre
+    isbn
+    status
+  }
+}`;
+
 export const Credential = (Component) => (props)=>{
     return (
        <Mutation mutation={CREDENTIAL_CHECK}>
        {(loginData) => (
           <Component 
-          loginData={({userid,pwd})=>loginData({variables:{userid,pwd}})}
+          loginData={({userid,pwd},refetchQueryVariables)=>loginData({variables:{userid,pwd},
+            refetchQueries: [
+              { query: LOAD_USERS, variables: refetchQueryVariables },
+            ]
+          })}
          {...props}
           />          
        )}

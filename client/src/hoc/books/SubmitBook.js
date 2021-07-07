@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost';
 
 import { Mutation } from 'react-apollo';
 
-import {LOAD_USERS} from './GetBook';
+import {LOAD_USERS} from './GetBookAll';
 
 const CREATE_USER_MUTATION = gql`
 mutation($name: String, $author: String, $genre: String, $isbn: String!) {

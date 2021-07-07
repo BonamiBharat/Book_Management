@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
     return {
-        changeNumber: state.changeNumber
+        changeNumber: state.changeNumber.count
     }
 }
 
 //Dispatcher 
-const mapDispatchProps = () => {
+const mapDispatchProps = (dispatch) => {
     return {
         increament,
         decreament
@@ -25,8 +25,6 @@ class Counter extends Component {
         console.log('props', this.props)
 
         const { increament, decreament } = this.props;
-        // console.log('increament', increament)
-
 
         return (
             <div>

@@ -76,7 +76,7 @@ class InputBook extends React.Component{
    <input type="text" value={this.state.author} onChange={this.addAuthor} placeholder="author" />
    <input type="text" value={this.state.genre} onChange={this.addGenre} placeholder="genre" />
    <input type="text" value={this.state.isbn} onChange={this.addisbn} placeholder="isbn" />
-   <button classaName="cssbutton" type="submit">Submit</button>
+   <button className="cssbutton" type="submit">Submit</button>
    </form>
    </>
 };

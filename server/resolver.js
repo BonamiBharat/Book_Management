@@ -17,17 +17,14 @@ const isAuthentication = async(parent,data,ctx,info)=>{
 }
 
 const resolver = {
-    Query: {
-        getBooks : combineResolvers( isAuthentication,(parent,{_id},ctx,info) => {  
-            // console.log("run", _id);
-            
-            // let bookData = bookHolder.filter((book) => {
-            //     console.log(id);
-            //     return book.id == id;
-            // });
-            // return bookData;
-        }),
-
+    Query: {    getBooks : (async(parent,data,ctx,info) => {  
+        // console.log("run2");
+        // console.log(bookHolder);
+        const result = await GetData.getallbook();
+        // console.log(result);
+        return result;
+    }
+  ),
         getBooksAll : combineResolvers( isAuthentication,(async(parent,data,ctx,info) => {  
             // console.log("run2");
             // console.log(bookHolder);
@@ -71,6 +68,7 @@ const resolver = {
         },
 
         createUser: combineResolvers( isAuthentication,async(parent,{userdata},ctx,info)=>{
+            console.log(userdata);
             CreateUserBookData.CreateUserData({
                 name: userdata.name,
                 userid: userdata.userid,

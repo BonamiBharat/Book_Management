@@ -1,6 +1,6 @@
 const schema = `
 type Query{
-    getBooks(_id: ID!): [Books]
+    getBooks: [Books]
     getBooksAll: [Books]
 }
 
